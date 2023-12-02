@@ -1,4 +1,4 @@
-# antitriche-
+# antitriche
 In the context of a new experimental project on the analysis of code produced by developers as well as candidates at Société Générale, we are looking to implement a code analysis tool that detects the code duplication rate:
 
 - For SG developers in comparison to the code already present on our versioning tool
