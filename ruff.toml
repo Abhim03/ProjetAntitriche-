@@ -1,0 +1,4 @@
+select = ["E", "F", "B", "UP"]
+
+[per-file-ignores]
+"*.ipynb" = ["E402"]
