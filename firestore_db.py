@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 from typing import TYPE_CHECKING
 
@@ -10,21 +11,35 @@ if TYPE_CHECKING:
     from google.cloud.firestore import Client
 
 
+FIREBASE_CERTIF = Path("antitriche-firebase-adminsdk.json")
+
+
 class FirestoreDB:
     """Classe pour interagir avec la base de données Firestore"""
 
-    def __init__(self, certif: str):
+    def __init__(self):
         """Initialise la connexion à la base de données"""
-        cred = credentials.Certificate(certif)
+        # Vérifie que le fichier existe
+        assert FIREBASE_CERTIF.exists(), f"Le fichier {FIREBASE_CERTIF} n'existe pas !"
+
+        cred = credentials.Certificate(FIREBASE_CERTIF)
         app = firebase_admin.initialize_app(cred)
 
         self.client: Client = firestore.client(app)
 
-    def set_data(self, collection: str, doc_id: str, data: dict):
+    def coll_ref(self, collection: str):
+        """Renvoie une référence vers une collection"""
+        return self.client.collection(collection)
+
+    def doc_ref(self, collection: str, doc_id: str):
+        """Renvoie une référence vers un document"""
+        return self.client.collection(collection).document(doc_id)
+
+    def set(self, collection: str, doc_id: str, data: dict):
         """Ajoute ou remplace des données dans une collection"""
         self.client.collection(collection).document(doc_id).set(data)
 
-    def update_data(self, collection: str, doc_id: str, data: dict):
+    def update(self, collection: str, doc_id: str, data: dict):
         """Met à jour des données existantes dans une collection"""
         self.client.collection(collection).document(doc_id).update(data)
 
