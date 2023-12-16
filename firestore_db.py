@@ -1,3 +1,5 @@
+"""Module pour interagir avec la base de données Firestore"""
+
 from __future__ import annotations
 from pathlib import Path
 
