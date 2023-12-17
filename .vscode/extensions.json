@@ -5,6 +5,7 @@
         "ms-python.python",
         "formulahendry.code-runner",
         "charliermarsh.ruff",
-        "vscode-icons-team.vscode-icons"
+        "vscode-icons-team.vscode-icons",
+        "davidanson.vscode-markdownlint"
     ]
 }

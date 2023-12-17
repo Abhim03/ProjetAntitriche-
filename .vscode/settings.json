@@ -11,5 +11,6 @@
     "editor.formatOnSave": true,
     "notebook.formatOnSave.enabled": true,
     "python.analysis.typeCheckingMode": "basic",
-    "python.analysis.diagnosticMode": "workspace"
+    "python.analysis.diagnosticMode": "workspace",
+    "code-runner.showExecutionMessage": false
 }
