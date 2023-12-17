@@ -1,8 +1,8 @@
 """Module pour interagir avec la base de données Firestore"""
 
 from __future__ import annotations
-from pathlib import Path
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import firebase_admin
