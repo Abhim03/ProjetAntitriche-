@@ -2,15 +2,16 @@ import shutil
 from pathlib import Path
 
 # chemin vers le dossier "~/Downloads" ou "~/Téléchargements"
-downloads_path = Path.home() / "Downloads"
-if not downloads_path.exists():
-    downloads_path = Path.home() / "Téléchargements"
+DOWNLOADS = Path.home() / "Downloads"
+if not DOWNLOADS.exists():
+    DOWNLOADS = Path.home() / "Téléchargements"
 
 
-firestore_certif = downloads_path / "antitriche-firebase-adminsdk.json"
+FIREBASE_CERTIF = DOWNLOADS / "antitriche-firebase-adminsdk.json"
 
-# déplace le fichier vers le répertoire courant (du projet) si le fichier existe
-if firestore_certif.exists():
-    shutil.move(firestore_certif, Path.cwd())
-else:
-    print(f"Le fichier n'a pas été trouvé dans {downloads_path}")
+if __name__ == "__main__":
+    # déplace le fichier vers le répertoire courant (du projet) si le fichier existe
+    if FIREBASE_CERTIF.exists():
+        shutil.move(FIREBASE_CERTIF, Path.cwd())
+    else:
+        print(f"Le fichier n'a pas été trouvé dans {DOWNLOADS}")

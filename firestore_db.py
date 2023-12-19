@@ -27,26 +27,26 @@ class FirestoreDB:
         cred = credentials.Certificate(FIREBASE_CERTIF)
         app = firebase_admin.initialize_app(cred)
 
-        self.client: Client = firestore.client(app)
+        self._client: Client = firestore.client(app)
 
     def coll_ref(self, collection: str):
         """Renvoie une référence vers une collection"""
-        return self.client.collection(collection)
+        return self._client.collection(collection)
 
     def doc_ref(self, collection: str, doc_id: str):
         """Renvoie une référence vers un document"""
-        return self.client.collection(collection).document(doc_id)
+        return self._client.collection(collection).document(doc_id)
 
     def set(self, collection: str, doc_id: str, data: dict):
         """Ajoute ou remplace des données dans une collection"""
-        self.client.collection(collection).document(doc_id).set(data)
+        self._client.collection(collection).document(doc_id).set(data)
 
     def update(self, collection: str, doc_id: str, data: dict):
         """Met à jour des données existantes dans une collection"""
-        self.client.collection(collection).document(doc_id).update(data)
+        self._client.collection(collection).document(doc_id).update(data)
 
     def print(self, collection: str):
         """Affiche le contenu d'une collection"""
-        coll_ref = self.client.collection(collection)
+        coll_ref = self._client.collection(collection)
         for doc in coll_ref.stream():
             print(f"{doc.id} : {doc.to_dict()}")
