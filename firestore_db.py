@@ -29,24 +29,32 @@ class FirestoreDB:
 
         self._client: Client = firestore.client(app)
 
-    def coll_ref(self, collection: str):
+    def collection(self, collection: str):
         """Renvoie une référence vers une collection"""
         return self._client.collection(collection)
 
-    def doc_ref(self, collection: str, doc_id: str):
+    def doc(self, doc_path: str):
         """Renvoie une référence vers un document"""
-        return self._client.collection(collection).document(doc_id)
+        return self._client.document(doc_path)
 
-    def set(self, collection: str, doc_id: str, data: dict):
+    def set(self, doc_path: str, data: dict):
         """Ajoute ou remplace des données dans une collection"""
-        self._client.collection(collection).document(doc_id).set(data)
+        self.doc(doc_path).set(data)
 
-    def update(self, collection: str, doc_id: str, data: dict):
+    def update(self, doc_path: str, data: dict):
         """Met à jour des données existantes dans une collection"""
-        self._client.collection(collection).document(doc_id).update(data)
+        self.doc(doc_path).update(data)
+
+    def add(self, collection: str, data: dict):
+        """Ajoute des données dans une collection. ID auto-généré"""
+        self.collection(collection).add(data)
+
+    def delete(self, doc_path: str):
+        """Supprime un document"""
+        self.doc(doc_path).delete()
 
     def print(self, collection: str):
         """Affiche le contenu d'une collection"""
-        coll_ref = self._client.collection(collection)
+        coll_ref = self.collection(collection)
         for doc in coll_ref.stream():
             print(f"{doc.id} : {doc.to_dict()}")
