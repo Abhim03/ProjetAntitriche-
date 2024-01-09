@@ -3,3 +3,4 @@ matplotlib
 ipykernel
 pandas
 firebase-admin
+flask
