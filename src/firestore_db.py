@@ -58,3 +58,9 @@ class FirestoreDB:
         coll_ref = self.collection(collection)
         for doc in coll_ref.stream():
             print(f"{doc.id} : {doc.to_dict()}")
+
+    def get_question(self, question_id):
+        # Assurez-vous que le chemin est correct
+        question_ref = self.doc(f"questions/{question_id}")
+        question_data = question_ref.get().to_dict()
+        return question_data
