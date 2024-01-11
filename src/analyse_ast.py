@@ -7,9 +7,9 @@ from ast import NodeVisitor
 from dataclasses import dataclass
 
 
-@dataclass(eq=True, frozen=True)
+@dataclass(frozen=True)
 class Feature:
-    feature_type: str
+    name: str
     line: int
     column: int
     metadata: str | None

@@ -2,10 +2,17 @@
     "recommendations": [
         "usernamehw.errorlens",
         "ms-toolsai.jupyter",
-        "ms-python.python",
         "formulahendry.code-runner",
         "charliermarsh.ruff",
         "vscode-icons-team.vscode-icons",
-        "davidanson.vscode-markdownlint"
+        "davidanson.vscode-markdownlint",
+        "mgmcdermott.vscode-language-babel",
+        "samuelcolvin.jinjahtml",
+        "tamasfe.even-better-toml",
+        "ecmel.vscode-html-css",
+        "esbenp.prettier-vscode",
+        "donjayamanne.python-environment-manager",
+        "ms-python.vscode-pylance",
+        "ms-python.python"
     ]
 }

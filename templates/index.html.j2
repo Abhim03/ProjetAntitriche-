@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plagiarism Checker</title>
+        <style>
+            body {
+                font-family: "Arial", sans-serif;
+                background-color: #f4f4f4;
+                line-height: 1.6;
+            }
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                gap: 20px;
+                padding: 0 20px;
+            }
+            textarea {
+                width: calc(50% - 10px);
+                min-height: 200px;
+                padding: 10px;
+                resize: vertical;
+                font-family: "Courier New", monospace;
+                white-space: pre-wrap;
+                overflow-x: auto;
+                box-sizing: border-box;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                background-color: white;
+            }
+            form {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+                padding: 10px;
+                background-color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            button {
+                display: block;
+                margin: 20px auto;
+                padding: 10px 20px;
+                background-color: #0056b3;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            button:hover {
+                background-color: #003d82;
+            }
+            .feature-list,
+            .highlighted-code {
+                margin-top: 20px;
+                border: 1px solid #ddd;
+                padding: 10px;
+                background-color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .feature-list ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            .feature-list li {
+                margin-bottom: 5px;
+                font-family: "Courier New", monospace;
+            }
+            .highlighted-code {
+                background-color: #f7f7f7;
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                }
+                textarea {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h2 style="text-align: center">Plagiarism Checker</h2>
+        <form action="/submit" method="post">
+            <div class="container">
+                <textarea
+                    name="code1"
+                    id="code1"
+                    placeholder="Enter first code snippet"
+                ></textarea>
+                <button type="button" class="upload-button" data-target="code1">
+                    Upload
+                </button>
+                <textarea
+                    name="code2"
+                    id="code2"
+                    placeholder="Enter second code snippet"
+                ></textarea>
+                <button type="button" class="upload-button" data-target="code2">
+                    Upload
+                </button>
+            </div>
+            <button type="submit">Check Similarity</button>
+        </form>
+        <!-- Display the similarity percentage above the code snippets -->
+        {% if similarity_percentage %}
+        <div style="text-align: center; margin-top: 20px">
+            <strong>Similarity Percentage:</strong> {{ similarity_percentage }}
+        </div>
+        {% endif %} {% if common_features %}
+        <div class="feature-list">
+            <strong>Common Features:</strong>
+            <ul>
+                {% for feature in common_features %}
+                <li>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %} {% if highlighted_code1 %}
+        <div class="highlighted-code">
+            <h3>Code Snippet 1:</h3>
+            <pre>{{ highlighted_code1 | safe }}</pre>
+        </div>
+        {% endif %} {% if highlighted_code2 %}
+        <div class="highlighted-code">
+            <h3>Code Snippet 2:</h3>
+            <pre>{{ highlighted_code2 | safe }}</pre>
+        </div>
+        {% endif %}
+
+        <script type="text/javascript">
+            function resizeTextArea(textArea) {
+                textArea.style.height = "auto";
+                textArea.style.height = textArea.scrollHeight + "px";
+            }
+
+            // Function to handle file upload
+            function uploadFile(targetTextArea) {
+                const fileInput = document.createElement("input");
+                fileInput.type = "file";
+                fileInput.accept = ".py"; // Allow only Python files
+
+                // Trigger file input dialog when the "upload" button is clicked
+                fileInput.addEventListener("change", function () {
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            const content = e.target.result;
+                            document.getElementById(targetTextArea).value =
+                                content;
+                        };
+
+                        reader.readAsText(file);
+                    }
+                });
+
+                // Simulate a click on the file input element
+                fileInput.click();
+            }
+
+            // Call the uploadFile function when an "upload" button is clicked
+            const uploadButtons = document.querySelectorAll(".upload-button");
+            uploadButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    const targetTextArea = button.getAttribute("data-target");
+                    uploadFile(targetTextArea);
+                });
+            });
+
+            // Call the resize function on page load for each textarea
+            window.addEventListener("load", function () {
+                var textAreas = document.getElementsByTagName("textarea");
+                for (var i = 0; i < textAreas.length; i++) {
+                    resizeTextArea(textAreas[i]);
+                    // Also resize on input
+                    textAreas[i].addEventListener("input", function () {
+                        resizeTextArea(this);
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

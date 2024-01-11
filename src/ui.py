@@ -3,7 +3,7 @@ from analyse_ast import compare_codes
 from flask import Flask, render_template, request
 
 
-def highlight(text, degree):
+def highlight(text: str, degree: int):
     max_degree = 5  # arbitrary value
 
     # scale factor = 255 at degree 0, down to 0 at max_degree
@@ -17,7 +17,7 @@ app = Flask(__name__, template_folder="../templates")
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html.j2")
 
 
 @app.route("/submit", methods=["POST"])
@@ -49,7 +49,7 @@ def submit():
     highlighted_code2 = "\n".join(code2_lines)
 
     return render_template(
-        "index.html",
+        "index.html.j2",
         similarity_percentage=f"{similarity:.2%}",  # Format similarity as xx.xx%
         highlighted_code1=highlighted_code1,
         highlighted_code2=highlighted_code2,
