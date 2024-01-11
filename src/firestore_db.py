@@ -37,11 +37,11 @@ class FirestoreDB:
         """Renvoie une référence vers un document"""
         return self._client.document(doc_path)
 
-    def set(self, doc_path: str, data: dict):
+    def set_data(self, doc_path: str, data: dict):
         """Ajoute ou remplace des données dans une collection"""
         self.doc(doc_path).set(data)
 
-    def update(self, doc_path: str, data: dict):
+    def update_data(self, doc_path: str, data: dict):
         """Met à jour des données existantes dans une collection"""
         self.doc(doc_path).update(data)
 
@@ -53,7 +53,7 @@ class FirestoreDB:
         """Supprime un document"""
         self.doc(doc_path).delete()
 
-    def print(self, collection: str):
+    def print_collection(self, collection: str):
         """Affiche le contenu d'une collection"""
         coll_ref = self.collection(collection)
         for doc in coll_ref.stream():
@@ -62,5 +62,4 @@ class FirestoreDB:
     def get_question(self, question_id):
         # Assurez-vous que le chemin est correct
         question_ref = self.doc(f"questions/{question_id}")
-        question_data = question_ref.get().to_dict()
-        return question_data
+        return question_ref.get().to_dict()

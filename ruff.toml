@@ -1,6 +1,8 @@
-select = ["E", "F", "B", "UP"]
+select = ['ALL']
+
+ignore = ['INP001', 'D100', 'ANN', 'D', 'N802', 'ERA', 'I001', 'T20', 'S']
 
 line-length = 120
 
 [per-file-ignores]
-"*.ipynb" = ["E402"]
+"*.ipynb" = ['E402']
