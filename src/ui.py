@@ -2,20 +2,17 @@ from collections import defaultdict
 from analyse_ast import compare_codes
 from flask import Flask, render_template, request
 
-app = Flask(__name__, template_folder="../templates")
-
 
 def highlight(text, degree):
-    """
-    Highlight a string with a background that starts from white and gradually
-    shifts towards red as the degree increases.
-    """
     max_degree = 5  # arbitrary value
 
     # scale factor = 255 at degree 0, down to 0 at max_degree
     scale_factor = max(0, min(255 * (1 - (degree / max_degree)), 255))
 
     return f'<span style="background-color: rgb(255, {scale_factor}, {scale_factor})">{text}</span>'
+
+
+app = Flask(__name__, template_folder="../templates")
 
 
 @app.route("/")
