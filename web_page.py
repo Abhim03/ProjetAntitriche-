@@ -79,7 +79,7 @@ if st.button("Submit Code"):
             st.header("AI code")
             st.markdown(annotated_code_AI, unsafe_allow_html=True)
         st.write(f"Similarity with AI code: {similarity_AI}")
-        st.write(f"Similarity with Human code: {similarity_H}")
+        st.write(f"Similarity with Leetcode response code: {similarity_H}")
 
         if similarity_AI > similarity_H:
             st.write("This code is likely written by AI.")
