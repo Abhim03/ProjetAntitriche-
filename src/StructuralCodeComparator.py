@@ -83,4 +83,6 @@ class StructuralCodeComparator(ast.NodeVisitor):
         common_features = features1.intersection(features2)
         total_features = features1.union(features2)
         similarity = len(common_features) / len(total_features) if total_features else 0
-        return similarity
+        similiraties = {"similarity_percentage": similarity, "common_features": common_features}
+
+        return similiraties

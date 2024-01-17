@@ -41,6 +41,6 @@ class AdvancedCodeComparator(StructuralCodeComparator):
         common_features = set(features1.values()).intersection(set(features2.values()))
         total_features = set(features1.values()).union(set(features2.values()))
         similarity = len(common_features) / len(total_features) if total_features else 0
+        similiraties = {"similarity_percentage": similarity, "common_features": common_features}
 
-        detailed_similarity = {"similarity_percentage": similarity, "common_features": list(common_features)}
-        return detailed_similarity
+        return similiraties

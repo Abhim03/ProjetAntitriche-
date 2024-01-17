@@ -43,7 +43,7 @@ st.title("Anti-Cheating Code Comparator")
 st.sidebar.title("Settings")
 
 # Language selection
-language = st.sidebar.selectbox("Select a language", ["Python", "Java", "C++"])
+language = st.sidebar.selectbox("Select a language", ["Python", "C++"])
 
 # Button to get a new question
 if st.sidebar.button("Get New Question"):
@@ -78,10 +78,10 @@ if st.button("Submit Code"):
         with columns[1]:
             st.header("AI code")
             st.markdown(annotated_code_AI, unsafe_allow_html=True)
-        st.write(f"Similarity with AI code: {similarity_AI}")
-        st.write(f"Similarity with Leetcode response code: {similarity_H}")
+        st.write(f'Similarity with AI code: {similarity_AI["similarity_percentage"]}')
+        st.write(f'Similarity with Leetcode response code: {similarity_H["similarity_percentage"]}')
 
-        if similarity_AI > similarity_H:
+        if similarity_AI["similarity_percentage"] > similarity_H["similarity_percentage"]:
             st.write("This code is likely written by AI.")
         else:
             st.write("This code is likely written by Human.")
