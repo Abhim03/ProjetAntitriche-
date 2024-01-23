@@ -1,4 +1,4 @@
-from __init__ import FirestoreDB
+from firestore_db import FirestoreDB
 import os
 
 db = FirestoreDB()

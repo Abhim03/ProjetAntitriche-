@@ -2,39 +2,26 @@ import ast
 
 
 class StructuralCodeComparator(ast.NodeVisitor):
-    """
-    Classe pour comparer la structure de base de deux segments de code Python.
-    Elle utilise l'analyse d'AST pour extraire des caractéristiques structurelles clés telles que
-    les définitions de fonctions,
-    les opérations binaires, et les instructions de retour, et les compare pour calculer un taux de similarité.
-    """
-
     def __init__(self):
-        """
-        Initialise la liste des caractéristiques extraites du code.
-        """
         self.features = set()
 
     def visit_FunctionDef(self, node):
-        """
-        Enhanced to record the position of FunctionDef nodes.
-        """
-        self.features.add(("FunctionDef", node.lineno, node.col_offset))
+        # Enhanced to record the position of FunctionDef nodes.
+
+        self.features.add(("FunctionDef", node.lineno, node.col_offset, None))
         self.generic_visit(node)
 
     def visit_Return(self, node):
-        """
-        Enhanced to record the position of Return nodes.
-        """
-        self.features.add(("Return", node.lineno, node.col_offset))
+        # Enhanced to record the position of Return nodes.
+
+        self.features.add(("Return", node.lineno, node.col_offset, None))
         self.generic_visit(node)
 
     def visit_BinOp(self, node):
-        """
-        Enhanced to record the position of BinOp nodes.
-        """
+        # Enhanced to record the position of BinOp nodes.
+
         op_type = type(node.op).__name__
-        self.features.add(("BinOp", op_type, node.lineno, node.col_offset))
+        self.features.add(("BinOp", node.lineno, node.col_offset, op_type))
         self.features.update(self.analyze_expression(node))
         self.generic_visit(node)
 
@@ -42,22 +29,19 @@ class StructuralCodeComparator(ast.NodeVisitor):
         """
         Analyse des expressions dans les nœuds BinOp.
         """
-        # Ajoutez ici votre logique d'analyse d'expressions spécifiques
-        # Retournez une liste de caractéristiques liées à l'expression
+
         return set()
 
     def visit_For(self, node):
-        """
-        Enhanced to record the position of For loops.
-        """
-        self.features.add(("For", node.lineno, node.col_offset))
+        # Enhanced to record the position of For loops.
+
+        self.features.add(("For", node.lineno, node.col_offset, None))
         self.features.update(self.analyze_for_loop(node))
         self.generic_visit(node)
 
     def analyze_for_loop(self, node):
-        """
-        Analyse des caractéristiques spécifiques aux boucles For.
-        """
+        """Analyse des caractéristiques spécifiques aux boucles For"""
+
         # Ajoutez ici votre logique d'analyse spécifique aux boucles For
         return set()
 
@@ -70,23 +54,25 @@ class StructuralCodeComparator(ast.NodeVisitor):
         self.features.add(("Print", len(node.values)))
         self.generic_visit(node)
 
-    def compare_codes(self, code1, code2):
-        """
-        Enhanced to return both similarity percentage and detailed matching features.
-        """
-        tree1 = ast.parse(code1)
-        tree2 = ast.parse(code2)
 
-        self.features = set()
-        self.visit(tree1)
-        features1 = {f"{feature}_{i}": feature for i, feature in enumerate(self.features)}
+def compare_codes(code1, code2):
+    """
+    Enhanced to return both similarity percentage and detailed matching features.
+    """
+    comparator1 = StructuralCodeComparator()
+    comparator2 = StructuralCodeComparator()
 
-        self.features = set()
-        self.visit(tree2)
-        features2 = {f"{feature}_{i}": feature for i, feature in enumerate(self.features)}
+    tree1 = ast.parse(code1)
+    tree2 = ast.parse(code2)
 
-        common_features = set(features1.values()).intersection(set(features2.values()))
-        total_features = set(features1.values()).union(set(features2.values()))
-        similarity = len(common_features) / len(total_features) if total_features else 0
+    comparator1.visit(tree1)
+    features1 = {f"{feature}_{i}": feature for i, feature in enumerate(comparator1.features)}
 
-        return {"similarity_percentage": similarity, "common_features": common_features}
+    comparator2.visit(tree2)
+    features2 = {f"{feature}_{i}": feature for i, feature in enumerate(comparator2.features)}
+
+    common_features = set(features1.values()).intersection(set(features2.values()))
+    total_features = set(features1.values()).union(set(features2.values()))
+    similarity = len(common_features) / len(total_features) if total_features else 0
+
+    return {"similarity_percentage": similarity, "common_features": common_features}

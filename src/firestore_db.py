@@ -1,4 +1,4 @@
-"""Module pour interagir avec la base de données Firestore"""
+# Module pour interagir avec la base de données Firestore
 
 from __future__ import annotations
 
@@ -17,13 +17,13 @@ FIREBASE_CERTIF = Path("src/antitriche-firebase-adminsdk.json")
 
 
 class FirestoreDB:
-    """Classe pour interagir avec la base de données Firestore"""
+    # Classe pour interagir avec la base de données Firestore
 
     def __init__(self):
         """Initialise la connexion à la base de données"""
         # Vérifie que le fichier existe
         assert FIREBASE_CERTIF.exists(), f"Le fichier {FIREBASE_CERTIF} n'existe pas !"
-        if not firebase_admin._apps:
+        if not firebase_admin._apps:  # noqa: SLF001
             cred = credentials.Certificate(FIREBASE_CERTIF)
             firebase_admin.initialize_app(cred)
 
@@ -67,6 +67,7 @@ class FirestoreDB:
         all_docs = []
         for doc in documents:
             doc_data = doc.to_dict()
+            assert doc_data is not None
             doc_data["id"] = doc.id  # Optionally include the document ID
             all_docs.append(doc_data)
 
