@@ -42,10 +42,9 @@ class StructuralCodeComparator(ast.NodeVisitor):
         """
         Analyse des expressions dans les nœuds BinOp.
         """
-        expression_features = set()
         # Ajoutez ici votre logique d'analyse d'expressions spécifiques
         # Retournez une liste de caractéristiques liées à l'expression
-        return expression_features
+        return set()
 
     def visit_For(self, node):
         """
@@ -59,30 +58,35 @@ class StructuralCodeComparator(ast.NodeVisitor):
         """
         Analyse des caractéristiques spécifiques aux boucles For.
         """
-        loop_features = set()
         # Ajoutez ici votre logique d'analyse spécifique aux boucles For
-        return loop_features
+        return set()
 
     # Ajoutez d'autres méthodes d'analyse pour les différentes caractéristiques que vous souhaitez intégrer
 
+    def visit_Print(self, node):
+        """
+        Visite les nœuds Print (instructions d'impression) et compte le nombre d'éléments imprimés.
+        """
+        self.features.add(("Print", len(node.values)))
+        self.generic_visit(node)
+
     def compare_codes(self, code1, code2):
         """
-        Enhanced to return both similarity percentage and positions of common features.
+        Enhanced to return both similarity percentage and detailed matching features.
         """
         tree1 = ast.parse(code1)
         tree2 = ast.parse(code2)
 
         self.features = set()
         self.visit(tree1)
-        features1 = self.features
+        features1 = {f"{feature}_{i}": feature for i, feature in enumerate(self.features)}
 
         self.features = set()
         self.visit(tree2)
-        features2 = self.features
+        features2 = {f"{feature}_{i}": feature for i, feature in enumerate(self.features)}
 
-        common_features = features1.intersection(features2)
-        total_features = features1.union(features2)
+        common_features = set(features1.values()).intersection(set(features2.values()))
+        total_features = set(features1.values()).union(set(features2.values()))
         similarity = len(common_features) / len(total_features) if total_features else 0
-        similiraties = {"similarity_percentage": similarity, "common_features": common_features}
 
-        return similiraties
+        return {"similarity_percentage": similarity, "common_features": common_features}

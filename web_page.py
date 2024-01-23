@@ -4,14 +4,12 @@ from streamlit_ace import st_ace
 import random
 
 from src import FirestoreDB
-from src.AdvancedCodeComparator import AdvancedCodeComparator
-from src.StructuralCodeComparator import StructuralCodeComparator
+from src.code_comparator import StructuralCodeComparator
 
 columns = st.columns(2)
 # Initialize FirestoreDB and Comparator
 firebase_db = FirestoreDB()
 comparator = StructuralCodeComparator()
-advanced_comparator = AdvancedCodeComparator()
 
 
 def annotate_code(code, similarities):
@@ -19,7 +17,7 @@ def annotate_code(code, similarities):
     lines = code.split("\n")
     for i, line in enumerate(lines):
         is_highlighted = False
-        for feature, lineno, col_offset in similarities["common_features"]:
+        for _, lineno, _ in similarities["common_features"]:
             if i == lineno - 1:  # Adjusting line number for zero-based index
                 annotated_code += f"<mark style='background-color: red;'>{line}</mark>\n"
                 is_highlighted = True
@@ -32,7 +30,7 @@ def annotate_code(code, similarities):
 
 # Function to get a random question for a given language
 def get_random_question(language):
-    questions = [q for q in firebase_db.get_all_documents("Questions")]
+    questions = list(firebase_db.get_all_documents("Questions"))
     return random.choice(questions) if questions else None
 
 
@@ -61,27 +59,27 @@ if st.button("Submit Code"):
     if "question" in st.session_state:
         st.write("Code submitted!")
 
-        code_Ai = st.session_state.question["IA"]
-        code_H = st.session_state.question["H"]
+        code_ai = st.session_state.question["IA"]
+        code_h = st.session_state.question["H"]
 
-        similarity_AI = comparator.compare_codes(code, code_Ai)
-        similarity_H = comparator.compare_codes(code, code_H)
+        similarity_ai = comparator.compare_codes(code, code_ai)
+        similarity_h = comparator.compare_codes(code, code_h)
 
-        advanced_similarity_AI = advanced_comparator.compare_codes(code, code_Ai)
-        advanced_similarity_H = advanced_comparator.compare_codes(code, code_H)
+        advanced_similarity_ai = comparator.compare_codes(code, code_ai)
+        advanced_similarity_h = comparator.compare_codes(code, code_h)
 
-        annotated_code = annotate_code(code, advanced_similarity_AI)
-        annotated_code_AI = annotate_code(code_Ai, advanced_similarity_AI)
+        annotated_code = annotate_code(code, advanced_similarity_ai)
+        annotated_code_ai = annotate_code(code_ai, advanced_similarity_ai)
         with columns[0]:
             st.header("Your code")
             st.markdown(annotated_code, unsafe_allow_html=True)
         with columns[1]:
             st.header("AI code")
-            st.markdown(annotated_code_AI, unsafe_allow_html=True)
-        st.write(f'Similarity with AI code: {similarity_AI["similarity_percentage"]}')
-        st.write(f'Similarity with Leetcode response code: {similarity_H["similarity_percentage"]}')
-
-        if similarity_AI["similarity_percentage"] > similarity_H["similarity_percentage"]:
+            st.markdown(annotated_code_ai, unsafe_allow_html=True)
+        st.write(f'Similarity with AI code: {similarity_ai["similarity_percentage"]}')
+        st.write(f'Similarity with Leetcode response code: {similarity_h["similarity_percentage"]}')
+        seuil = 0.7
+        if similarity_ai["similarity_percentage"] > seuil:
             st.write("This code is likely written by AI.")
         else:
             st.write("This code is likely written by Human.")

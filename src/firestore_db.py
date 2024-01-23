@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from google.cloud.firestore import Client
 
 
-FIREBASE_CERTIF = Path("antitriche-firebase-adminsdk.json")
+FIREBASE_CERTIF = Path("src/antitriche-firebase-adminsdk.json")
 
 
 class FirestoreDB:
@@ -23,11 +23,11 @@ class FirestoreDB:
         """Initialise la connexion à la base de données"""
         # Vérifie que le fichier existe
         assert FIREBASE_CERTIF.exists(), f"Le fichier {FIREBASE_CERTIF} n'existe pas !"
+        if not firebase_admin._apps:
+            cred = credentials.Certificate(FIREBASE_CERTIF)
+            firebase_admin.initialize_app(cred)
 
-        cred = credentials.Certificate(FIREBASE_CERTIF)
-        app = firebase_admin.initialize_app(cred)
-
-        self._client: Client = firestore.client(app)
+        self._client: Client = firestore.client()
 
     def collection(self, collection: str):
         """Renvoie une référence vers une collection"""
@@ -37,11 +37,11 @@ class FirestoreDB:
         """Renvoie une référence vers un document"""
         return self._client.document(doc_path)
 
-    def set_data(self, doc_path: str, data: dict):
+    def set(self, doc_path: str, data: dict):
         """Ajoute ou remplace des données dans une collection"""
         self.doc(doc_path).set(data)
 
-    def update_data(self, doc_path: str, data: dict):
+    def update(self, doc_path: str, data: dict):
         """Met à jour des données existantes dans une collection"""
         self.doc(doc_path).update(data)
 
@@ -53,13 +53,27 @@ class FirestoreDB:
         """Supprime un document"""
         self.doc(doc_path).delete()
 
-    def print_collection(self, collection: str):
+    def print(self, collection: str):
         """Affiche le contenu d'une collection"""
         coll_ref = self.collection(collection)
         for doc in coll_ref.stream():
             print(f"{doc.id} : {doc.to_dict()}")
 
+    def get_all_documents(self, collection_name: str):
+        """Retrieve all documents from a specified collection"""
+        collection_ref = self.collection(collection_name)
+        documents = collection_ref.stream()
+
+        all_docs = []
+        for doc in documents:
+            doc_data = doc.to_dict()
+            doc_data["id"] = doc.id  # Optionally include the document ID
+            all_docs.append(doc_data)
+
+        return all_docs
+
     def get_question(self, question_id):
         # Assurez-vous que le chemin est correct
         question_ref = self.doc(f"questions/{question_id}")
+
         return question_ref.get().to_dict()

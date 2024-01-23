@@ -1,5 +1,4 @@
-from StructuralCodeComparator import StructuralCodeComparator
-
+from code_comparator import StructuralCodeComparator
 
 code1 = """
 class Solution:
