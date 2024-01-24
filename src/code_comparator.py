@@ -1,7 +1,7 @@
 import ast
 
 
-class StructuralCodeComparator(ast.NodeVisitor):
+class _CodeComparator(ast.NodeVisitor):
     def __init__(self):
         self.features = set()
 
@@ -55,12 +55,12 @@ class StructuralCodeComparator(ast.NodeVisitor):
         self.generic_visit(node)
 
 
-def compare_codes(code1, code2):
+def compare_codes(code1: str, code2: str):
     """
     Enhanced to return both similarity percentage and detailed matching features.
     """
-    comparator1 = StructuralCodeComparator()
-    comparator2 = StructuralCodeComparator()
+    comparator1 = _CodeComparator()
+    comparator2 = _CodeComparator()
 
     tree1 = ast.parse(code1)
     tree2 = ast.parse(code2)

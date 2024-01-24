@@ -1,4 +1,13 @@
-from code_comparator import compare_codes
+try:
+    from src.code_comparator import compare_codes
+
+except ModuleNotFoundError:
+    import sys
+    from pathlib import Path
+
+    sys.path.append(str(Path.cwd()))  # to allow importing from src folder
+
+    from src.code_comparator import compare_codes
 
 code1 = """
 class Solution:

@@ -1,0 +1,4 @@
+class Solution:
+    def func(self, input_parameters):
+        # Your code here
+        
