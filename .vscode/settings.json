@@ -21,5 +21,6 @@
     },
     "prettier.tabWidth": 4,
     "workbench.iconTheme": "vscode-icons",
-    "git.autofetch": true
+    "git.autofetch": true,
+    "git.confirmSync": false
 }

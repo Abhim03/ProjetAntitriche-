@@ -32,4 +32,5 @@ class Solution:
 
 
 similarity = compare_codes(code1, code2)
-print(f"Similarity: {similarity}")
+print(f"Percentage: {similarity['similarity_percentage']}")
+print(f"Features: {similarity['common_features']}")
