@@ -2,7 +2,7 @@ select = ['ALL']
 
 ignore = ['ANN', 'D', 'D100', 'ERA', 'I001', 'INP001', 'N802', 'S', 'T20']
 
-line-length = 120
+line-length = 100
 
 [per-file-ignores]
-    "*.ipynb" = ['E402']
+"*.ipynb" = ['E402']

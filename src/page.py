@@ -4,7 +4,6 @@ from streamlit_ace import st_ace
 from src.code_comparator import compare_codes
 from src.firestore_db import FirestoreDB
 
-
 # Initialize FirestoreDB
 firestore_db = FirestoreDB()
 
@@ -48,9 +47,18 @@ def run():
             st.sidebar.write("No questions available for this language.")
 
     # dynamically change the key of the code editor widget, so that it resets for each new question
-    editor_key = f"code_editor_{st.session_state.question_id}" if st.session_state.question_id else "code_editor"
+    editor_key = (
+        f"code_editor_{st.session_state.question_id}"
+        if st.session_state.question_id
+        else "code_editor"
+    )
 
-    code = st_ace(language="python", theme="dracula", key=editor_key, value=st.session_state.prefilled_code)
+    code = st_ace(
+        language="python",
+        theme="dracula",
+        key=editor_key,
+        value=st.session_state.prefilled_code,
+    )
 
     # Submit button for code
     if st.button("Submit Code"):
@@ -72,13 +80,13 @@ def run():
                 st.header("AI code")
                 st.markdown(annotated_code_ai, unsafe_allow_html=True)
 
-            st.write(f'Similarity with AI code: {similarity_ai["similarity_percentage"]}')
-            st.write(f'Similarity with Leetcode response code: {similarity_h["similarity_percentage"]}')
+            st.write(f'Similarity with AI code: {similarity_ai["percentage"]}')
+            st.write(f'Similarity with Leetcode response code: {similarity_h["percentage"]}')
 
             seuil = 0.7
-            if similarity_ai["similarity_percentage"] > seuil:
+            if similarity_ai["percentage"] > seuil:
                 st.write("This code is likely written by AI.")
-            elif similarity_h["similarity_percentage"] > seuil:
+            elif similarity_h["percentage"] > seuil:
                 st.write("This code is likely plagiarized from a coding website.")
             else:
                 st.write("There is likely no plagiarism.")
