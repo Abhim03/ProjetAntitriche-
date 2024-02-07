@@ -41,10 +41,17 @@
             margin-bottom: 5px; /* Adds space between list items */
             font-family: monospace;
         }
+        .code-snippets-container {
+            display: flex;
+            justify-content: space-between; /* Spreads the code snippets apart */
+            gap: 20px; /* Adds space between the code snippets */
+        }
         .highlighted-code {
+            flex: 1; /* Allows each code snippet to take equal width */
             background-color: #f7f7f7; /* Background color for the highlighted code */
             padding: 5px; /* Padding for the highlighted code */
             border: 1px solid #ccc; /* Border for the highlighted code */
+            min-width: 0; /* Prevents flex items from growing beyond their container */
         }
     </style>
 </head>
@@ -53,27 +60,35 @@
     <form action="/submit" method="post">
         <div class="container">
             <textarea name="code1" id="code1" placeholder="Enter first code snippet"></textarea>
-            <!-- Add an "import" button next to code1 -->
             <button type="button" class="import-button" data-target="code1">Import</button>
             <textarea name="code2" id="code2" placeholder="Enter second code snippet"></textarea>
-            <!-- Add an "import" button next to code2 -->
             <button type="button" class="import-button" data-target="code2">Import</button>
         </div>
         <button type="submit">Check Similarity</button>
     </form>
+    
     {% if similarity %}
         <div>
             <strong>Similarity:</strong> {{ similarity }}
         </div>
     {% endif %}
-    
-    <!-- Display the similarity percentage above the code snippets -->
+
     {% if highlighted_code1 and highlighted_code2 %}
         <div>
             <strong>Similarity Percentage:</strong> {{ similarity_percentage }}
         </div>
+        <div class="code-snippets-container">
+            <div class="highlighted-code">
+                <h3>Code Snippet 1:</h3>
+                <pre>{{ highlighted_code1 | safe }}</pre>
+            </div>
+            <div class="highlighted-code">
+                <h3>Code Snippet 2:</h3>
+                <pre>{{ highlighted_code2 | safe }}</pre>
+            </div>
+        </div>
     {% endif %}
-    
+
     {% if common_features %}
         <div class="feature-list">
             <strong>Common Features:</strong>
@@ -84,32 +99,18 @@
             </ul>
         </div>
     {% endif %}
-    {% if highlighted_code1 %}
-        <div class="highlighted-code">
-            <h3>Code Snippet 1:</h3>
-            <pre>{{ highlighted_code1 | safe }}</pre>
-        </div>
-    {% endif %}
-    {% if highlighted_code2 %}
-        <div class="highlighted-code">
-            <h3>Code Snippet 2:</h3>
-            <pre>{{ highlighted_code2 | safe }}</pre>
-        </div>
-    {% endif %}
-        
+
     <script type="text/javascript">
         function resizeTextArea(textArea) {
             textArea.style.height = 'auto';
             textArea.style.height = textArea.scrollHeight + 'px';
         }
 
-        // Function to handle file import
         function importFile(targetTextArea) {
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
-            fileInput.accept = '.py'; // Allow only Python files
+            fileInput.accept = '.py';
 
-            // Trigger file input dialog when the "import" button is clicked
             fileInput.addEventListener('change', function () {
                 const file = fileInput.files[0];
                 if (file) {
@@ -124,11 +125,9 @@
                 }
             });
 
-            // Simulate a click on the file input element
             fileInput.click();
         }
 
-        // Call the importFile function when an "import" button is clicked
         const importButtons = document.querySelectorAll('.import-button');
         importButtons.forEach(function (button) {
             button.addEventListener('click', function () {
@@ -137,12 +136,10 @@
             });
         });
 
-        // Call the resize function on page load for each textarea
         window.addEventListener('load', function() {
             var textAreas = document.getElementsByTagName('textarea');
             for (var i = 0; i < textAreas.length; i++) {
                 resizeTextArea(textAreas[i]);
-                // Also resize on input
                 textAreas[i].addEventListener('input', function() {
                     resizeTextArea(this);
                 });
