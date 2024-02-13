@@ -47,10 +47,8 @@ class CodeASTComparator(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Call(self, node):
-        # Vérifier si node.func est une instance de ast.Name (pour les appels de fonction directe)
         if isinstance(node.func, ast.Name):
             self.add_feature(node, f"Call-{node.func.id}")
-        # Vérifier si node.func est une instance de ast.Attribute (pour les appels de méthodes)
         elif isinstance(node.func, ast.Attribute):
             self.add_feature(node, f"MethodCall-{node.func.attr}")
         self.generic_visit(node)
