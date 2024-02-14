@@ -1,23 +1,10 @@
-import openai
+from utils.code_generation_utils import CodeGenerator
 
 
 class SeniorBot:
-    def __init__(self, openai_api_key):
-        self.api_key = openai_api_key
-        openai.api_key = self.api_key
+    def __init__(self):
+        self.code_generator = CodeGenerator(model_name="gpt2-medium")
 
     def generate_code(self, problem_description):
-        prompt = f"Écris une fonction avancée et bien documentée en Python pour : {problem_description}. Assure-toi d'inclure la gestion des erreurs et des commentaires explicatifs."
-        try:
-            response = openai.Completion.create(
-                engine="code-davinci-002",
-                prompt=prompt,
-                temperature=0.7,
-                max_tokens=150,
-                top_p=1.0,
-                frequency_penalty=0.0,
-                presence_penalty=0.0,
-            )
-            return response.choices[0].text.strip()
-        except Exception as e:
-            return str(e)
+        prompt = f"Senior Level: Écris une fonction avancée et bien documentée en Python pour : {problem_description}. Assure-toi d'inclure la gestion des erreurs."
+        return self.code_generator.generate_code(prompt, max_length=200)

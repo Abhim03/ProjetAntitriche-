@@ -1,23 +1,10 @@
-import openai
+from utils.code_generation_utils import CodeGenerator
 
 
 class JuniorBot:
-    def __init__(self, openai_api_key):
-        self.api_key = openai_api_key
-        openai.api_key = self.api_key
+    def __init__(self):
+        self.code_generator = CodeGenerator(model_name="gpt2")
 
     def generate_code(self, problem_description):
-        prompt = f"Écris une fonction simple en Python pour : {problem_description}."
-        try:
-            response = openai.Completion.create(
-                engine="code-davinci-002",
-                prompt=prompt,
-                temperature=0.7,
-                max_tokens=100,
-                top_p=1.0,
-                frequency_penalty=0.0,
-                presence_penalty=0.0,
-            )
-            return response.choices[0].text.strip()
-        except Exception as e:
-            return str(e)
+        prompt = f"Junior Level: Écris une fonction simple et basique en Python pour : {problem_description}"
+        return self.code_generator.generate_code(prompt, max_length=150)
