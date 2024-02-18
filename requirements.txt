@@ -6,3 +6,7 @@ firebase-admin
 flask
 streamlit
 streamlit-ace
+transformers
+torch
+ast
+openai
