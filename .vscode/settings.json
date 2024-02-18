@@ -6,13 +6,21 @@
     "code-runner.saveAllFilesBeforeRun": true,
     "code-runner.saveFileBeforeRun": true,
     "code-runner.executorMap": {
-        "python": "set PYTHONIOENCODING=utf8 && \"$pythonPath\" -u $fullFileName",
+        "python": "set PYTHONIOENCODING=utf8 && \"$pythonPath\" -u $fullFileName"
     },
     "editor.formatOnSave": true,
     "notebook.formatOnSave.enabled": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.diagnosticMode": "workspace",
-    "code-runner.showExecutionMessage": true,
-    "editor.inlayHints.fontSize": 12,
-    "code-runner.clearPreviousOutput": true
+    "code-runner.clearPreviousOutput": true,
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.tabWidth": 4,
+    "workbench.iconTheme": "vscode-icons",
+    "git.autofetch": true,
+    "git.confirmSync": false
 }

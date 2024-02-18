@@ -1,0 +1,1 @@
+Donne moi une fonction qui prend deux entiers et renvoie leur somme.

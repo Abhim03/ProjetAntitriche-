@@ -10,7 +10,7 @@ if not DOWNLOADS.exists():
 FIREBASE_CERTIF = DOWNLOADS / "antitriche-firebase-adminsdk.json"
 
 if __name__ == "__main__":
-    # déplace le fichier vers le répertoire courant (du projet) si le fichier existe
+    # répertoire courant = antitriche/ (!= antitriche/src/)
     if FIREBASE_CERTIF.exists():
         shutil.move(FIREBASE_CERTIF, Path.cwd())
     else:
