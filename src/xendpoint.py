@@ -14,10 +14,9 @@ def submit_code():
     question_id = data.get("question_id")
     candidate_code = data.get("candidate_code")
 
-    # Récupérer les réponses de GPT et LeetCode depuis votre base de données
     question = firestore_db.get_question_by_id(question_id)
-    if not question:
-        return jsonify({"error": "Question not found"}), 404
+    if not question_id or not candidate_code:
+        return jsonify({"error": "Missing question_id or candidate_code"}), 400
 
     code_gpt = question["IA"]
     code_leetcode = question["H"]
