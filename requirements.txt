@@ -12,3 +12,4 @@ ast
 openai
 sklearn
 numpy
+flask-restx
