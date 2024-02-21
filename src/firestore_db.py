@@ -82,7 +82,7 @@ class FirestoreDB:
 
     def get_question(self, question_id: str):
         """Récupère une question."""
-        doc_ref = self._doc(f"questions/{question_id}").get()
+        doc_ref = self._doc(f"Questions/{question_id}").get()
         if doc_ref.exists:
             return doc_ref.to_dict()
         return None
