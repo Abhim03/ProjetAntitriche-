@@ -87,7 +87,7 @@ class FirestoreDB:
             return doc_ref.to_dict()
         return None
 
-    def get_random_question(self, language):
+    def get_random_question(self):
         """Récupère une question aléatoire pour un langage donné"""
         questions = self.get_doc_list("Questions")
         return random.choice(questions)

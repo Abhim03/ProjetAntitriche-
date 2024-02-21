@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restx import Api, Resource, fields, reqparse
-from src.code_comparator import compare_codes
-from src.firestore_db import FirestoreDB
+from code_comparator import compare_codes
+from firestore_db import FirestoreDB
 
 app = Flask(__name__)
 api = Api(
