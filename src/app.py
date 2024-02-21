@@ -21,7 +21,8 @@ code_submission_model = api.model(
     {
         "question_id": fields.String(required=True, description="L'ID unique de la question"),
         "candidate_code": fields.String(
-            required=True, description="Le code soumis par le candidat"
+            required=True,
+            description="Le code soumis par le candidat",
         ),
     },
 )
@@ -29,10 +30,14 @@ code_submission_model = api.model(
 
 parser = reqparse.RequestParser()
 parser.add_argument(
-    "question_id", required=True, help="L'ID unique de la question ne peut être vide."
+    "question_id",
+    required=True,
+    help="L'ID unique de la question ne peut être vide.",
 )
 parser.add_argument(
-    "candidate_code", required=True, help="Le code soumis par le candidat ne peut être vide."
+    "candidate_code",
+    required=True,
+    help="Le code soumis par le candidat ne peut être vide.",
 )
 
 
@@ -45,10 +50,11 @@ class CodeComparison(Resource):
         question_id = args["question_id"]
         candidate_code = args["candidate_code"]
 
-        question = firestore_db.get_question_by_id(question_id)
-        if not question:
-            api.abort(404, "La question spécifiée n'a pas été trouvée.")
+        question = firestore_db.get_question(question_id)
+        if question is None:
+            api.abort(404, f"La question spécifiée avec l'ID {question_id} n'a pas été trouvée.")
 
+        assert question is not None
         code_gpt = question["IA"]
         code_leetcode = question["H"]
 
