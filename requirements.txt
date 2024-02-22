@@ -10,6 +10,5 @@ transformers
 torch
 ast
 openai
-sklearn
 numpy
 flask-restx
