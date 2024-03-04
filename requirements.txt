@@ -4,8 +4,6 @@ ipykernel
 pandas
 firebase-admin
 flask
-streamlit
-streamlit-ace
 transformers
 torch
 openai
