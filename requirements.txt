@@ -4,9 +4,9 @@ ipykernel
 pandas
 firebase-admin
 flask
-streamlit
-streamlit-ace
 transformers
 torch
-ast
 openai
+numpy
+flask-restx
+requests
