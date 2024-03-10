@@ -1,0 +1,7 @@
+Given an input string like:
+
+"Well, sheep says beeeeee and cat says miaaaaaaaaaaaaw - and a cow would shout moooooooooow".
+
+Extract the animal sounds from the string into a list.
+(Words that include character repetions longer than a 2-length sequence, as shown in the example.)
+ 
