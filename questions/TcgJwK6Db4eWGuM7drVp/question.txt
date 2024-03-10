@@ -1,0 +1,9 @@
+Implement a data structure that stores integers. We can add elements to the data structure.
+
+The class has a pop_med() method, which returns and removes the element that is closest to the median. (In case of ambiguity, return the smaller closest element.)
+
+Median:
+odd element number: 1, 3, 4, 5, 7, 9, 11  → 5
+(pop_med() should return 5)
+even element number: 1, 3, 4, 5, 7, 9, 11, 12  → (5+7)/2 = 6
+(pop_med() should return 5)
