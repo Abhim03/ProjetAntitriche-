@@ -9,7 +9,7 @@ api = Api(
     app,
     version="1.0",
     title="API de Génération de Contenu",
-    description="Une API pour générer des réponses à des questions en utilisant OpenAI, adaptées aux niveaux junior et senior.",
+    description="Une API pour générer des réponses à des questions en utilisant un llm local (Mistral), adaptées aux niveaux junior et senior.",
 )
 
 ns = api.namespace("content_generation", description="Opérations de génération de contenu")
@@ -49,4 +49,4 @@ class ContentGeneration(Resource):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)

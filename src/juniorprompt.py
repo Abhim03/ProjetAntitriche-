@@ -1,12 +1,24 @@
-import openai
-
+import requests
+import json
 
 def generate_junior_response(question):
-    openai.api_key = "votre_clé_api"
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=f"Écris-moi une fonction simple et basique pour : {question}",
-        temperature=0.7,
-        max_tokens=150,
-    )
-    return response.choices[0].text.strip()
+    url = "https://34a1-129-104-252-51.ngrok-free.app/v1/completions"
+    headers = {
+        "Authorization": "Bearer votre_clé_api",  # Remplacez "votre_clé_api" par votre clé API réelle
+        "Content-Type": "application/json",
+    }
+    data = {
+        "model": "gpt-3.5-turbo",  # Ajustez au modèle disponible pour chat completions
+        "messages": [
+            {"role": "system", "content": "Vous êtes un programmeur senior très expérimenté. Votre code est clair, bien organisé, et gère correctement les erreurs."},
+            {"role": "user", "content": f"{question}"}
+        ],
+        "temperature": 0.0,
+        "max_tokens": 150,
+    }
+
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    if response.status_code == 200:
+        return response.json()['choices'][0]['message']['content'].strip()
+    else:
+        return f"Erreur: {response.status_code} - {response.text}"
