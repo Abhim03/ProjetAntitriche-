@@ -7,7 +7,7 @@ seuil3 = 1000
 
 
 class CodeComparator:
-    def __init__(self):
+    def _init_(self):
         self.ast_comparator = CodeASTComparator()
         self.semantic_comparator = SemanticASTComparator()
 
