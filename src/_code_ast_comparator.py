@@ -1,7 +1,16 @@
 import ast
-
+import re
 
 class CodeASTComparator(ast.NodeVisitor):
+
+
+    @staticmethod
+    def normalize_code(code):
+    # Supprime les commentaires, normalise les espaces, etc.
+        code = re.sub(r'#.*', '', code)  # Supprime les commentaires
+        code = re.sub(r'\s+', ' ', code)  # Réduit les espaces multiples
+        return code
+
     def __init__(self):
         super().__init__()
         self.features = set()
@@ -13,12 +22,14 @@ class CodeASTComparator(ast.NodeVisitor):
         super().generic_visit(node)
         self.depth -= 1
 
-    def add_feature(self, node, feature_name):
-        """Helper to add features with depth."""
-        self.features.add((feature_name, node.lineno, node.col_offset, self.depth))
+    def add_feature(self, node, feature_name, additional_info=None):
+        """Helper to add features with depth and additional info."""
+        feature = (feature_name, node.lineno, node.col_offset, self.depth, additional_info)
+        self.features.add(feature)
 
     def visit_FunctionDef(self, node):
-        self.add_feature(node, "FunctionDef")
+        num_params = len(node.args.args)  # Number of parameters
+        self.add_feature(node, "FunctionDef", additional_info=f"params:{num_params}")
         self.generic_visit(node)
 
     def visit_Return(self, node):
@@ -27,7 +38,7 @@ class CodeASTComparator(ast.NodeVisitor):
 
     def visit_BinOp(self, node):
         op_type = type(node.op).__name__
-        self.add_feature(node, "BinOp-" + op_type)
+        self.add_feature(node, "BinOp", additional_info=op_type)
         self.generic_visit(node)
 
     def visit_If(self, node):
@@ -47,14 +58,11 @@ class CodeASTComparator(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_Call(self, node):
+        num_args = len(node.args)  # Number of arguments
         if isinstance(node.func, ast.Name):
-            self.add_feature(node, f"Call-{node.func.id}")
+            self.add_feature(node, "Call", additional_info=f"{node.func.id}_args:{num_args}")
         elif isinstance(node.func, ast.Attribute):
-            self.add_feature(node, f"MethodCall-{node.func.attr}")
-        self.generic_visit(node)
-
-    def visit_ExceptHandler(self, node):
-        self.add_feature(node, "Except")
+            self.add_feature(node, "MethodCall", additional_info=f"{node.func.attr}_args:{num_args}")
         self.generic_visit(node)
 
     def visit_Assign(self, node):
@@ -63,10 +71,13 @@ class CodeASTComparator(ast.NodeVisitor):
 
     def visit_BoolOp(self, node):
         op_type = type(node.op).__name__
-        self.add_feature(node, f"BoolOp-{op_type}")
+        self.add_feature(node, "BoolOp", additional_info=op_type)
         self.generic_visit(node)
 
     def compare_codes(self, code1, code2):
+        code1 = CodeASTComparator.normalize_code(code1)
+        code2 = CodeASTComparator.normalize_code(code2)
+
         comparator1 = CodeASTComparator()
         comparator2 = CodeASTComparator()
 
@@ -82,3 +93,12 @@ class CodeASTComparator(ast.NodeVisitor):
         similarity = len(common_features) / len(total_features) if total_features else 0
 
         return {"percentage": similarity, "common_features": list(common_features)}
+
+
+
+
+
+
+
+
+
