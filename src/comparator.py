@@ -7,7 +7,7 @@ seuil3 = 1000
 
 
 class CodeComparator:
-    def _init_(self):
+    def __init__(self):
         self.ast_comparator = CodeASTComparator()
         self.semantic_comparator = SemanticASTComparator()
 
@@ -54,3 +54,15 @@ class CodeComparator:
             return (0.4, 0.6)  # Augmenter le poids de l'analyse sémantique pour les codes longs
         else:
             return (0.5, 0.5)  # Poids égaux pour les codes courts
+
+
+def test():
+    comparator = CodeComparator()
+    code1 = "def add(a, b): return a + b"
+    code2 = "def add(a, b): return a + b"
+    similarity = comparator.compare_codes(code1, code2)
+    print(f"Similarity between code1 and code2: {similarity}")
+
+
+if __name__ == "__main__":
+    test()
