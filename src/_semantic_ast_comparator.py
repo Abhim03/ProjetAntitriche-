@@ -3,6 +3,7 @@ import torch
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
+
 class SemanticASTComparator:
     tokenizer = None
     model = None
@@ -44,3 +45,14 @@ class SemanticASTComparator:
             print(f"Error during code embedding generation: {e}")
             return np.zeros(1)  # Retourner un vecteur nul en cas d'erreur
 
+
+def test():
+    comparator = SemanticASTComparator()
+    code1 = "def add(a, b): return a + b"
+    code2 = "def add(a, b): return a + b"
+    similarity = comparator.calculate_semantic_similarity(code1, code2)
+    print(f"Similarity between code1 and code2: {similarity}")
+
+
+if __name__ == "__main__":
+    test()

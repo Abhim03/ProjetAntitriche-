@@ -1,14 +1,12 @@
 import ast
 import re
 
+
 class CodeASTComparator(ast.NodeVisitor):
-
-
     @staticmethod
     def normalize_code(code):
-    # Supprime les commentaires, normalise les espaces, etc.
-        code = re.sub(r'#.*', '', code)  # Supprime les commentaires
-        code = re.sub(r'\s+', ' ', code)  # Réduit les espaces multiples
+        # Supprime les commentaires, normalise les espaces, etc.
+        code = re.sub(r"#.*", "", code)  # Supprime les commentaires
         return code
 
     def __init__(self):
@@ -62,7 +60,9 @@ class CodeASTComparator(ast.NodeVisitor):
         if isinstance(node.func, ast.Name):
             self.add_feature(node, "Call", additional_info=f"{node.func.id}_args:{num_args}")
         elif isinstance(node.func, ast.Attribute):
-            self.add_feature(node, "MethodCall", additional_info=f"{node.func.attr}_args:{num_args}")
+            self.add_feature(
+                node, "MethodCall", additional_info=f"{node.func.attr}_args:{num_args}"
+            )
         self.generic_visit(node)
 
     def visit_Assign(self, node):
@@ -95,10 +95,20 @@ class CodeASTComparator(ast.NodeVisitor):
         return {"percentage": similarity, "common_features": list(common_features)}
 
 
+def test():
+    comparator = CodeASTComparator()
+    code1 = """
+def add(a,b):
+    result = a + b
+    return result
+"""
+    code2 = """
+def somme(x,y):
+    return x + y
+"""
+    similarity = comparator.compare_codes(code1, code2)
+    print(f"Similarity between code1 and code2: {similarity}")
 
 
-
-
-
-
-
+if __name__ == "__main__":
+    test()
