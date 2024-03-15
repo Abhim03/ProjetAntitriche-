@@ -10,7 +10,7 @@
     },
     "editor.formatOnSave": true,
     "notebook.formatOnSave.enabled": true,
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "off",
     "python.analysis.diagnosticMode": "workspace",
     "code-runner.clearPreviousOutput": true,
     "[html]": {
