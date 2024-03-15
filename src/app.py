@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
+from flask_restx import reqparse
 from firestore_db import FirestoreDB  # Assurez-vous que ce module est correctement défini
 from comparator import CodeComparator  # Assurez-vous d'avoir le fichier comparator.py
 
@@ -20,10 +21,11 @@ code_submission_model = api.model(
     "CodeSubmission",
     {
         "question_id": fields.String(required=True, description="L'ID unique de la question"),
-        "candidate_code": fields.String(required=True, description="Le code soumis par le candidat"),
+        "candidate_code": fields.String(
+            required=True, description="Le code soumis par le candidat"
+        ),
     },
 )
-
 
 parser = reqparse.RequestParser()
 parser.add_argument(
@@ -36,6 +38,7 @@ parser.add_argument(
     required=True,
     help="Le code soumis par le candidat ne peut être vide.",
 )
+
 
 @ns.route("/submit")
 class CodeComparison(Resource):
@@ -61,12 +64,6 @@ class CodeComparison(Resource):
             "similarity_with_gpt": similarity_gpt["percentage"],
             "similarity_with_leetcode": similarity_leetcode["percentage"],
         }, 200
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
