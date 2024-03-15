@@ -10,3 +10,5 @@ Machine learning will help analyze the percentage of similarity among the produc
 Run `pip install -r requirements.txt` to install the required packages.
 
 Then run `streamlit run app.py` to launch the web app.
+
+current endpoint link : https://952a-129-104-253-35.ngrok-free.app/

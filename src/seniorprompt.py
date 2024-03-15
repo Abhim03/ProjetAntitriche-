@@ -3,7 +3,7 @@ import requests
 import json
 
 def generate_senior_response(question):
-    url = "https://34a1-129-104-252-51.ngrok-free.app/v1/chat/completions"  # Ajusté pour l'endpoint de chat
+    url = "https://560c-129-104-252-51.ngrok-free.app/v1/chat/completions"  # Ajusté pour l'endpoint de chat
     headers = {
         "Authorization": "Bearer votre_clé_api",
         "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import json
 
 
 def generate_junior_response(question):
-    url = "https://34a1-129-104-252-51.ngrok-free.app/v1/completions"
+    url = "https://560c-129-104-252-51.ngrok-free.app/v1/completions"
     headers = {
         "Authorization": "Bearer votre_clé_api",  # Remplacez "votre_clé_api" par votre clé API réelle
         "Content-Type": "application/json",
@@ -22,6 +22,7 @@ def generate_junior_response(question):
     }
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
+    print(response)
     if response.status_code == 200:
         return response.json()["choices"][0]["message"]["content"].strip()
     else:
