@@ -60,10 +60,13 @@ class CodeComparison(Resource):
         comparator = CodeComparator()
         similarity_gpt = comparator.compare_codes(candidate_code, code_gpt)
         similarity_leetcode = comparator.compare_codes(candidate_code, code_leetcode)
-        return {
-            "similarity_with_gpt": similarity_gpt["percentage"],
-            "similarity_with_leetcode": similarity_leetcode["percentage"],
-        }, 200
+        return jsonify(
+            {
+                "similarity_with_gpt": str(similarity_gpt["percentage"]),
+                "similarity_with_leetcode": str(similarity_leetcode["percentage"]),
+            },
+            200,
+        )
 
 
 if __name__ == "__main__":

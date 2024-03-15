@@ -22,12 +22,12 @@ class CodeComparator:
         # Vérifier si l'une des similarités dépasse 80%
         if syntax_similarity["percentage"] > seuil1:
             return {
-                "combined_percentage": syntax_similarity["percentage"],
+                "percentage": syntax_similarity["percentage"],
                 "alert": "High syntax similarity detected. Potential plagiarism.",
             }
         elif semantic_similarity["percentage"] > seuil1:
             return {
-                "combined_percentage": semantic_similarity["percentage"],
+                "percentage": semantic_similarity["percentage"],
                 "alert": "High semantic similarity detected. Potential plagiarism.",
             }
         else:
@@ -39,12 +39,12 @@ class CodeComparator:
 
             if combined_similarity > seuil2:
                 return {
-                    "combined_percentage": combined_similarity,
+                    "percentage": combined_similarity,
                     "alert": "Plagiarism likely. Combined similarity exceeds threshold.",
                 }
             else:
                 return {
-                    "combined_percentage": combined_similarity,
+                    "percentage": combined_similarity,
                     "alert": "No significant similarity detected.",
                 }
 

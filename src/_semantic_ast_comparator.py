@@ -23,7 +23,7 @@ class SemanticASTComparator:
             embedding1 = self.get_code_embedding(code1)
             embedding2 = self.get_code_embedding(code2)
             similarity = cosine_similarity([embedding1], [embedding2])[0][0]
-            return similarity
+            return {"percentage": similarity}
         except Exception as e:
             # Gestion robuste des erreurs
             print(f"Error during semantic similarity calculation: {e}")
