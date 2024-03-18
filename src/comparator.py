@@ -25,7 +25,7 @@ class CodeComparator:
                 "percentage": syntax_similarity["percentage"],
                 "alert": "High syntax similarity detected. Potential plagiarism.",
             }
-        elif semantic_similarity["percentage"] > seuil1:
+        elif semantic_similarity["percentage"] > seuil1:  # noqa: RET505
             return {
                 "percentage": semantic_similarity["percentage"],
                 "alert": "High semantic similarity detected. Potential plagiarism.",
@@ -42,7 +42,7 @@ class CodeComparator:
                     "percentage": combined_similarity,
                     "alert": "Plagiarism likely. Combined similarity exceeds threshold.",
                 }
-            else:
+            else:  # noqa: RET505
                 return {
                     "percentage": combined_similarity,
                     "alert": "No significant similarity detected.",
@@ -52,7 +52,7 @@ class CodeComparator:
         length = max(len(code1), len(code2))
         if length > seuil3:  # Seuil pour un code considéré comme "long"
             return (0.4, 0.6)  # Augmenter le poids de l'analyse sémantique pour les codes longs
-        else:
+        else:  # noqa: RET505
             return (0.5, 0.5)  # Poids égaux pour les codes courts
 
 

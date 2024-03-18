@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from flask_restx import Api, Resource, fields
 from flask_restx import reqparse
 from firestore_db import FirestoreDB  # Assurez-vous que ce module est correctement défini
@@ -22,7 +22,7 @@ code_submission_model = api.model(
     {
         "question_id": fields.String(required=True, description="L'ID unique de la question"),
         "candidate_code": fields.String(
-            required=True, description="Le code soumis par le candidat"
+            required=True, description="Le code soumis par le candidat",
         ),
     },
 )
