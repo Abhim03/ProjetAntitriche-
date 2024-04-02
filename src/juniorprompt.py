@@ -3,7 +3,7 @@ import json
 
 
 def generate_junior_response(question):
-    url = "https://560c-129-104-252-51.ngrok-free.app/v1/completions"
+    url = "https://23d3-129-104-252-51.ngrok-free.app/v1/completions"
     headers = {
         "Authorization": "Bearer votre_clé_api",  # Remplacez "votre_clé_api" par votre clé API réelle
         "Content-Type": "application/json",

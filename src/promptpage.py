@@ -9,7 +9,7 @@ api = Api(
     app,
     version="1.0",
     title="API de Génération de Contenu",
-    description="Une API pour générer des réponses à des questions en utilisant un llm local (Mistral), adaptées aux niveaux junior et senior.",
+    description="Une API pour générer des réponses à des questions en utilisant un llm local (Mistral), adaptées aux niveaux junior et senior.",  # noqa: E501
 )
 
 ns = api.namespace("content_generation", description="Opérations de génération de contenu")
