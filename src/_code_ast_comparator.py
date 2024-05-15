@@ -99,19 +99,23 @@ class CodeASTComparator(ast.NodeVisitor):
         code1_lines = code1.split("\n")
         code2_lines = code2.split("\n")
 
-        highlighted_lines1 = {feature[2] for feature in common_features}
-        highlighted_lines2 = {feature[2] for feature in common_features}
+        highlighted_lines1 = {
+            feature[1] - 1 for feature in common_features
+        }  # Assurez-vous que 'feature[1]' contient le numéro de ligne correct
+        highlighted_lines2 = {
+            feature[1] - 1 for feature in common_features
+        }  # Utilisez '-1' pour ajuster les indices base-0 de Python
 
-        for lineno in highlighted_lines1:
-            if lineno < len(code1_lines):
-                code1_lines[lineno - 1] = (
-                    f"<span style='background-color: red'>{code1_lines[lineno - 1]}</span>"
+        for index in range(len(code1_lines)):
+            if index in highlighted_lines1:
+                code1_lines[index] = (
+                    f"<span style='background-color: red'>{code1_lines[index]}</span>"
                 )
 
-        for lineno in highlighted_lines2:
-            if lineno < len(code2_lines):
-                code2_lines[lineno - 1] = (
-                    f"<span style='background-color: red'>{code2_lines[lineno - 1]}</span>"
+        for index in range(len(code2_lines)):
+            if index in highlighted_lines2:
+                code2_lines[index] = (
+                    f"<span style='background-color: red'>{code2_lines[index]}</span>"
                 )
 
         return "\n".join(code1_lines), "\n".join(code2_lines)

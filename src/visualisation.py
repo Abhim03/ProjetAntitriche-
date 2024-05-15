@@ -25,7 +25,7 @@ def submit():
 
     return render_template(
         "index.html",
-        similarity_percentage=f"{similarity_percentage:.2f}%",
+        similarity_percentage=f"{similarity_percentage*100:.2f}%",
         highlighted_code1=highlighted_code1,
         highlighted_code2=highlighted_code2,
         common_features=common_features,
