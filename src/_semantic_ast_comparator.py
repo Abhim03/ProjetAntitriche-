@@ -23,8 +23,8 @@ class SemanticASTComparator:
             embedding1 = self.get_code_embedding(code1)
             embedding2 = self.get_code_embedding(code2)
             similarity = cosine_similarity([embedding1], [embedding2])[0][0]
-            return {"percentage": similarity}
-        except Exception as e:
+            return {"percentage": similarity}  # noqa: TRY300
+        except Exception as e:  # noqa: BLE001
             # Gestion robuste des erreurs
             print(f"Error during semantic similarity calculation: {e}")
             return {"percentage": 0.0, "error": str(e)}
@@ -40,7 +40,7 @@ class SemanticASTComparator:
             code_embedding = mean_max_pooling.detach().numpy()[0]
             # Normalisation de l'embedding pour une comparaison plus fiable
             return code_embedding / np.linalg.norm(code_embedding)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             # Gestion robuste des erreurs
             print(f"Error during code embedding generation: {e}")
             return np.zeros(1)  # Retourner un vecteur nul en cas d'erreur
@@ -48,8 +48,29 @@ class SemanticASTComparator:
 
 def test():
     comparator = SemanticASTComparator()
-    code1 = "def add(a, b): return a + b"
-    code2 = "def add(a, b): return a + b"
+    code1 = """
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):  # noqa: SIM110
+        if num % i == 0:
+            return False
+    return True
+
+print(is_prime(29))
+"""
+    code2 = """
+def verifier_primes(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5) + 1):  # noqa: SIM110
+        if n % i == 0:
+            return False
+    return True
+
+print(verifier_primes(29))
+
+"""
     similarity = comparator.calculate_semantic_similarity(code1, code2)
     print(f"Similarity between code1 and code2: {similarity}")
 

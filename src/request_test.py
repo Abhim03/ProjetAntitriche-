@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "https://cat-allowing-merely.ngrok-free.app/comparaison"
+url = "https://21f7-129-104-252-51.ngrok-free.app/comparaison/submit"
 data = {
     "question_id": "somme",
     "candidate_code": "def add(a, b):\n    return a + b\n",

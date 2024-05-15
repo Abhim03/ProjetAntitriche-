@@ -58,8 +58,29 @@ class CodeComparator:
 
 def test():
     comparator = CodeComparator()
-    code1 = "def add(a, b): return a + b"
-    code2 = "def add(a, b): return a + b"
+    code1 = """
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):  # noqa: SIM110
+        if num % i == 0:
+            return False
+    return True
+
+print(is_prime(29))
+"""
+    code2 = """
+def verifier_primes(n):
+    if n <= 1:
+        return False
+    for i in range(2, int(n**0.5) + 1):  # noqa: SIM110
+        if n % i == 0:
+            return False
+    return True
+
+print(verifier_primes(29))
+
+"""
     similarity = comparator.compare_codes(code1, code2)
     print(f"Similarity between code1 and code2: {similarity}")
 

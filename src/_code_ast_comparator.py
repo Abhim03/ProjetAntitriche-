@@ -6,8 +6,7 @@ class CodeASTComparator(ast.NodeVisitor):
     @staticmethod
     def normalize_code(code):
         # Supprime les commentaires, normalise les espaces, etc.
-        code = re.sub(r"#.*", "", code)  # Supprime les commentaires
-        return code
+        return re.sub(r"#.*", "", code)  # Supprime les commentaires
 
     def __init__(self):
         super().__init__()
@@ -61,7 +60,9 @@ class CodeASTComparator(ast.NodeVisitor):
             self.add_feature(node, "Call", additional_info=f"{node.func.id}_args:{num_args}")
         elif isinstance(node.func, ast.Attribute):
             self.add_feature(
-                node, "MethodCall", additional_info=f"{node.func.attr}_args:{num_args}"
+                node,
+                "MethodCall",
+                additional_info=f"{node.func.attr}_args:{num_args}",
             )
         self.generic_visit(node)
 
@@ -94,17 +95,50 @@ class CodeASTComparator(ast.NodeVisitor):
 
         return {"percentage": similarity, "common_features": list(common_features)}
 
+    def highlight_code(self, code1, code2, common_features):
+        code1_lines = code1.split("\n")
+        code2_lines = code2.split("\n")
+
+        highlighted_lines1 = {feature[2] for feature in common_features}
+        highlighted_lines2 = {feature[2] for feature in common_features}
+
+        for lineno in highlighted_lines1:
+            if lineno < len(code1_lines):
+                code1_lines[lineno - 1] = (
+                    f"<span style='background-color: red'>{code1_lines[lineno - 1]}</span>"
+                )
+
+        for lineno in highlighted_lines2:
+            if lineno < len(code2_lines):
+                code2_lines[lineno - 1] = (
+                    f"<span style='background-color: red'>{code2_lines[lineno - 1]}</span>"
+                )
+
+        return "\n".join(code1_lines), "\n".join(code2_lines)
+
 
 def test():
     comparator = CodeASTComparator()
     code1 = """
-def add(a,b):
-    result = a + b
-    return result
+def contient_pair(nums):
+    for num in nums:  # noqa: SIM110
+        if num % 2 == 0:
+            return True
+    return False
+
+liste_nums = [1, 3, 5, 2, 9]
+print(contient_pair(liste_nums))
 """
     code2 = """
-def somme(x,y):
-    return x + y
+def has_even(numbers):
+    for number in numbers:  # noqa: SIM110
+        if number % 2 == 0:
+            return True
+    return False
+
+test_numbers = [7, 11, 15, 22, 17]
+print(has_even(test_numbers))
+
 """
     similarity = comparator.compare_codes(code1, code2)
     print(f"Similarity between code1 and code2: {similarity}")

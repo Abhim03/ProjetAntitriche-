@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_ace import st_ace
 
-from src.code_comparator import compare_codes
+from src.comparator import compare_codes
 from src.firestore_db import FirestoreDB
 
 # Initialize FirestoreDB
